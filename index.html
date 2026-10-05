@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IELTS in 30 Days</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F6F5; --sheet:#FFFFFF; --ink:#16233F; --graphite:#555B66; --rule:#E2A9B1; --mark:#C8374B;
+  --line:#D9DEE2;
+  --L:#1F7A75; --R:#2F5DA8; --W:#B07A12; --S:#7547A8;
+  --head:"Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --body:"Literata", Georgia, "Times New Roman", serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#10151F; --sheet:#182030; --ink:#E6EAF2; --graphite:#A3AAB8; --rule:#6E3A44; --mark:#F0687A;
+    --line:#2C3547; --L:#4FC1B8; --R:#7EA6EE; --W:#E2AE4A; --S:#B394E0;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#10151F; --sheet:#182030; --ink:#E6EAF2; --graphite:#A3AAB8; --rule:#6E3A44; --mark:#F0687A;
+  --line:#2C3547; --L:#4FC1B8; --R:#7EA6EE; --W:#E2AE4A; --S:#B394E0;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--mark);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 20px 60px}
+
+header{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:end;border-bottom:2px solid var(--ink);padding-bottom:18px}
+h1{font-family:var(--head);font-weight:700;font-size:clamp(2.2rem,6vw,3.6rem);line-height:1;margin:0;letter-spacing:-.02em}
+h1 small{display:block;font-weight:500;font-size:.38em;letter-spacing:0;color:var(--graphite);margin-top:10px}
+.setup{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--head);font-size:.9rem}
+.setup label{display:flex;flex-direction:column;gap:4px;color:var(--graphite)}
+.setup input,.setup select{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:6px 8px;color:var(--ink);min-width:0}
+
+.main{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:32px;margin-top:28px}
+@media (max-width:820px){.main{grid-template-columns:1fr} header{grid-template-columns:1fr}}
+
+/* answer-sheet bubble grid */
+.sheet{background:var(--sheet);border:1px solid var(--line);border-left:6px solid var(--rule);padding:18px 18px 14px;border-radius:4px}
+.sheet h2{font-family:var(--head);font-size:1rem;font-weight:600;margin:0 0 4px}
+.sheet p.note{font-family:var(--head);font-size:.85rem;color:var(--graphite);margin:0 0 14px}
+.week{display:grid;grid-template-columns:62px repeat(7,1fr);align-items:center;gap:6px;margin-bottom:8px}
+.week span{font-family:var(--head);font-size:.78rem;color:var(--graphite)}
+.bubble{--p:0;aspect-ratio:1;width:100%;max-width:36px;border-radius:50%;border:1.5px solid var(--mark);
+  background:conic-gradient(var(--ink) calc(var(--p)*1%), transparent 0);
+  font-family:var(--head);font-size:.75rem;font-weight:600;color:var(--mark);cursor:pointer;display:grid;place-items:center;padding:0;position:relative;transition:transform .15s}
+.bubble[data-full="1"]{color:var(--sheet)}
+.bubble.sel{box-shadow:0 0 0 3px var(--paper),0 0 0 5px var(--mark)}
+.bubble.today::after{content:"";position:absolute;bottom:-7px;width:5px;height:5px;border-radius:50%;background:var(--mark)}
+.bubble:hover{transform:scale(1.08)}
+.totals{margin-top:16px;border-top:1px dashed var(--line);padding-top:12px;font-family:var(--head);font-size:.88rem}
+.bar{display:grid;grid-template-columns:78px 1fr 40px;gap:8px;align-items:center;margin:6px 0}
+.bar i{display:block;height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i b{display:block;height:100%;width:0;transition:width .4s}
+
+/* day panel */
+.day h2{font-family:var(--head);font-size:clamp(1.6rem,4vw,2.3rem);line-height:1.1;margin:0;letter-spacing:-.01em}
+.dayhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.daynav{display:flex;gap:6px}
+.btn{font-family:var(--head);font-weight:600;font-size:.9rem;background:var(--sheet);border:1.5px solid var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn:disabled{opacity:.35;cursor:default}
+.phase{font-family:var(--head);color:var(--graphite);margin:6px 0 18px;font-size:.95rem}
+.tasks{list-style:none;padding:0;margin:0}
+.task{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+.task input{appearance:none;width:26px;height:26px;border:2px solid var(--c);border-radius:50%;margin:2px 0 0;cursor:pointer;display:grid;place-items:center}
+.task input:checked{background:var(--c)}
+.task input:checked::after{content:"";width:8px;height:13px;border:solid var(--sheet);border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-2px)}
+.task .skill{font-family:var(--head);font-weight:600;color:var(--c);font-size:.9rem}
+.task .txt{margin:2px 0 0;max-width:62ch}
+.task.done .txt{color:var(--graphite);text-decoration:line-through;text-decoration-color:var(--c)}
+.task .mins{font-family:var(--head);font-size:.8rem;color:var(--graphite)}
+.notes{margin-top:18px}
+.notes label{font-family:var(--head);font-weight:600;font-size:.9rem;display:block;margin-bottom:6px}
+textarea{width:100%;min-height:90px;resize:vertical;background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:10px;font:inherit;font-size:.95rem;color:var(--ink);
+  background-image:repeating-linear-gradient(transparent 0 27px,var(--line) 27px 28px);line-height:28px}
+
+/* tools */
+.tools{margin-top:48px;border-top:2px solid var(--ink);padding-top:18px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.tab{font-family:var(--head);font-weight:600;background:none;border:none;border-bottom:3px solid transparent;padding:6px 10px;cursor:pointer;color:var(--graphite)}
+.tab[aria-selected="true"]{color:var(--ink);border-color:var(--mark)}
+.panel{display:none}.panel.on{display:block}
+.timerface{font-family:var(--head);font-size:clamp(3.5rem,14vw,7rem);font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;margin:10px 0 16px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.cue{background:var(--sheet);border:1px solid var(--line);border-left:6px solid var(--S);padding:20px 22px;max-width:560px;border-radius:4px}
+.cue h3{font-family:var(--head);margin:0 0 8px;font-size:1.2rem}
+.cue ul{margin:0 0 8px;padding-left:20px}
+.flash{background:var(--sheet);border:1px solid var(--line);border-radius:4px;max-width:560px;min-height:180px;padding:24px;cursor:pointer;display:flex;flex-direction:column;justify-content:center}
+.flash .w{font-family:var(--head);font-size:2rem;font-weight:700}
+.flash .m{margin-top:8px}
+.flash .ex{color:var(--graphite);font-style:italic;margin-top:6px}
+.muted{font-family:var(--head);color:var(--graphite);font-size:.88rem}
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;max-width:680px}
+.calc label{font-family:var(--head);font-size:.9rem;display:flex;flex-direction:column;gap:4px}
+.calc input,.calc select{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:8px}
+.result{font-family:var(--head);margin-top:18px;font-size:1.1rem}
+.result strong{font-size:2.4rem;display:block;line-height:1.1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>IELTS in 30 days<small>One answer sheet, thirty bubbles. Fill one in each day.</small></h1>
+    <div class="setup">
+      <label>Start date<input type="date" id="start"></label>
+      <label>Target band
+        <select id="target"><option>5.5</option><option>6</option><option>6.5</option><option selected>7</option><option>7.5</option><option>8</option><option>8.5</option></select>
+      </label>
+      <label>Module
+        <select id="module"><option>Academic</option><option>General Training</option></select>
+      </label>
+    </div>
+  </header>
+
+  <div class="main">
+    <aside>
+      <div class="sheet">
+        <h2>Your answer sheet</h2>
+        <p class="note">A bubble fills as you finish that day's tasks.</p>
+        <div id="grid"></div>
+        <div class="totals" id="totals"></div>
+      </div>
+    </aside>
+
+    <section class="day" aria-live="polite">
+      <div class="dayhead">
+        <h2 id="dayTitle"></h2>
+        <div class="daynav">
+          <button class="btn" id="prev" aria-label="Previous day">Previous</button>
+          <button class="btn" id="next" aria-label="Next day">Next</button>
+        </div>
+      </div>
+      <p class="phase" id="phase"></p>
+      <ul class="tasks" id="tasks"></ul>
+      <div class="notes">
+        <label for="note">Mistakes and notes for this day</label>
+        <textarea id="note" placeholder="e.g. Lost marks on Not Given questions — I keep confusing it with False."></textarea>
+      </div>
+    </section>
+  </div>
+
+  <section class="tools">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-p="timer">Exam timer</button>
+      <button class="tab" role="tab" aria-selected="false" data-p="cue">Speaking cue cards</button>
+      <button class="tab" role="tab" aria-selected="false" data-p="words">Word cards</button>
+      <button class="tab" role="tab" aria-selected="false" data-p="band">Band calculator</button>
+    </div>
+
+    <div class="panel on" id="timer">
+      <div class="row" id="presets"></div>
+      <div class="timerface" id="clock">20:00</div>
+      <div class="row">
+        <button class="btn primary" id="tStart">Start</button>
+        <button class="btn" id="tReset">Reset</button>
+        <span class="muted" id="tLabel">Writing Task 1</span>
+      </div>
+    </div>
+
+    <div class="panel" id="cue">
+      <div class="cue" id="cueCard"></div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn primary" id="cueNew">New card</button>
+        <button class="btn" id="cuePrep">Start 1 min prep, then 2 min talk</button>
+        <span class="muted" id="cueClock"></span>
+      </div>
+    </div>
+
+    <div class="panel" id="words">
+      <p class="muted" id="wordCount"></p>
+      <div class="flash" id="flash" tabindex="0" role="button" aria-label="Flip card"></div>
+      <div class="row" style="margin-top:14px">
+        <button class="btn" id="wLearn">Still learning</button>
+        <button class="btn primary" id="wKnow">I know this</button>
+        <button class="btn" id="wReset">Reset deck</button>
+      </div>
+    </div>
+
+    <div class="panel" id="band">
+      <div class="calc">
+        <label>Listening (out of 40)<input type="number" min="0" max="40" id="bL" placeholder="e.g. 31"></label>
+        <label>Reading (out of 40)<input type="number" min="0" max="40" id="bR" placeholder="e.g. 29"></label>
+        <label>Writing band<select id="bW"></select></label>
+        <label>Speaking band<select id="bS"></select></label>
+      </div>
+      <div class="result" id="bandOut"></div>
+      <p class="muted">Raw-score conversions are approximate; official tables vary slightly between test versions.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+const PLAN = [
+ // [phase, title, L, R, W, S]
+ ["Week 1: know the test","Diagnostic day","Take a full Listening test under timed conditions and mark it.","Take a full Reading test (60 min) and mark it.","Write one Task 2 essay in 40 minutes, no help.","Record yourself answering 6 Part 1 questions. Listen back once."],
+ ["Week 1: know the test","Forms and the four essay types","Section 1 drill: practise spelling names, numbers and dates aloud.","Skimming: read 3 passages' first and last sentences only, then summarise each in one line.","Learn the four Task 2 types: opinion, discussion, problem–solution, two-part question.","Part 1 topics: home, work, studies. Answer each in 2–3 sentences."],
+ ["Week 1: know the test","Maps and line graphs","Section 2 monologues: one practice set, focus on direction words.","Scanning: find names, dates and numbers in a passage in under 2 minutes.","Task 1: write an overview for a line graph — the two biggest trends only.","Part 1 topics: hobbies, food, weekends."],
+ ["Week 1: know the test","True, False, Not Given","Multiple choice: note which wrong options were mentioned but rejected.","True / False / Not Given: one full set. Write why for each Not Given.","Build a body paragraph: point, explanation, example, link back.","Part 2 intro: write 1-minute notes for one cue card, then speak for 2 minutes."],
+ ["Week 1: know the test","Headings and bar charts","Section 3 conversations: track who holds which opinion.","Matching headings: one set. Read the heading list last, not first.","Task 1 bar chart: compare highest, lowest and one surprise.","Part 2: describe a person who influenced you."],
+ ["Week 1: know the test","Lectures and introductions","Section 4 lecture: note completion, one full section.","Sentence completion: check word limits carefully.","Task 2 introductions: paraphrase 5 questions and add a clear position.","Part 3: extend answers with why, how and an example."],
+ ["Week 1: know the test","Review the week","Redo every Listening question you got wrong this week.","Redo every Reading question you got wrong this week.","Rewrite your Day 1 essay using what you learned.","Re-record Day 1's Part 1 answers. Compare with the first recording."],
+ ["Week 2: build the skills","Dictation and pie charts","Dictation: write down 15 minutes of a podcast sentence by sentence.","Yes / No / Not Given: one set on the writer's opinions.","Task 1 pie charts: compare proportions using fractions and percentages.","Part 2: describe a place you'd like to visit."],
+ ["Week 2: build the skills","Predicting answers","Before each section, predict the word type for every gap.","Matching information to paragraphs: one set.","Task 2 body paragraph with a specific, realistic example.","Part 1 fluency: answer 10 questions with no pauses longer than 2 seconds."],
+ ["Week 2: build the skills","Processes","Map and plan labelling: one set.","Summary completion with a word bank.","Task 1 process diagram: use the passive voice and sequencing words.","Part 2: describe an important event."],
+ ["Week 2: build the skills","Paraphrase spotting","List 20 synonym pairs you heard in today's audio vs. the questions.","Multiple choice reading: eliminate before choosing.","Cohesion: replace repeated linking words in an old essay.","Part 3: compare past and present (e.g. how shopping has changed)."],
+ ["Week 2: build the skills","Tables and pronunciation","Two sections back to back, timed.","One passage in exactly 20 minutes.","Task 1 table: pick the key comparisons, ignore the rest.","Pronunciation: practise word stress and chunking with a 1-minute reading."],
+ ["Week 2: build the skills","Shadowing","Shadow a native speaker for 10 minutes (repeat right after them).","Diagram label completion: one set.","Full Task 2 problem–solution essay, 40 minutes.","Part 2: describe an object you use every day."],
+ ["Week 2: build the skills","Mini-mock","Full Listening test, timed.","Full Reading test, timed.","Task 2 in 40 minutes. Score it against the band descriptors.","Full speaking mock (Parts 1–3), recorded."],
+ ["Week 3: strategy under time","Maps of change","Full Listening test.","Time management: 20 / 20 / 20 minutes per passage, strictly.","Task 1 maps: describe how a place changed over time.","Part 3: speculate about the future (will, might, likely to)."],
+ ["Week 3: strategy under time","Your error log","Review your error log and group mistakes by type.","Passage 3 practice: the longest and hardest one.","Task 2 discussion essay: both views, then yours.","Parts 1 and 2 back to back, timed."],
+ ["Week 3: strategy under time","Grammar range","Two Section 4 lectures.","Matching headings, timed.","Grammar range: rewrite 6 sentences using conditionals and relative clauses.","Part 2: describe a challenging experience."],
+ ["Week 3: strategy under time","Mixed charts","Full Listening test.","Full Reading test.","Task 1 mixed chart (e.g. line + table): link the two visuals.","Part 3 abstract topics: technology and the environment."],
+ ["Week 3: strategy under time","Traps","Spelling and plural traps: check every answer you transferred today.","True / False / Not Given, timed.","Task 2 advantages and disadvantages essay.","Self-assess a recording with the official band descriptors."],
+ ["Week 3: strategy under time","Topic vocabulary","Two note-completion sections.","Full Reading test.","Topic vocabulary: 15 phrases each for education and environment.","Full speaking mock, recorded."],
+ ["Week 3: strategy under time","Weekly mock","Full Listening test.","Full Reading test.","Task 1 + Task 2 in 60 minutes.","Full speaking mock with a friend or tutor if possible."],
+ ["Week 4: full mocks","Mock 1","Full Listening test.","Full Reading test.","Task 1 + Task 2, 60 minutes.","Three random Part 2 cue cards."],
+ ["Week 4: full mocks","Learn from Mock 1","Review every Listening error from Mock 1.","Review every Reading error from Mock 1.","Rewrite your weakest essay from Mock 1.","Part 3 practice on the weakest topic."],
+ ["Week 4: full mocks","Mock 2","Full Listening test.","Full Reading test.","Task 1 + Task 2, 60 minutes.","Full speaking mock."],
+ ["Week 4: full mocks","Weakest skill day","Double session on your weakest Listening section.","Double session on your weakest Reading question type.","If Writing is weakest: two Task 2 essays.","If Speaking is weakest: two full mocks."],
+ ["Week 4: full mocks","Mock 3","Full Listening test.","Full Reading test.","Task 1 + Task 2, 60 minutes.","Full speaking mock."],
+ ["Week 4: full mocks","Plans, not essays","Light: one section only.","Light: one passage only.","Plan five Task 2 essays in 10 minutes each. Don't write them.","Three Part 2 cue cards."],
+ ["Week 4: full mocks","Dress rehearsal","Final mock at the same start time as your real test.","Reading straight after, as in the exam.","Writing straight after, no breaks.","Speaking mock, recorded."],
+ ["Final days","Consolidate","Reread your error log.","Reread your error log.","Review your Task 1 overview phrases and essay structures.","Review your best Part 2 recordings."],
+ ["Final days","Rest and logistics","Light listening for enjoyment only.","Check your ID, venue and travel time.","Pack pencils, eraser and water.","Sleep early. You've done the work."]
+];
+const MINS = {"Diagnostic day":180,"Mini-mock":180,"Weekly mock":180,"Mock 1":180,"Mock 2":180,"Mock 3":180,"Dress rehearsal":180,"Rest and logistics":20,"Consolidate":60};
+const SK = [["L","Listening"],["R","Reading"],["W","Writing"],["S","Speaking"]];
+
+const CUES = [
+ ["Describe a book you enjoyed reading",["what the book was","when you read it","what it was about"],"and explain why you enjoyed it."],
+ ["Describe a time you helped someone",["who you helped","what the situation was","how you helped"],"and explain how you felt afterwards."],
+ ["Describe a skill you would like to learn",["what the skill is","how you would learn it","how long it would take"],"and explain why you want to learn it."],
+ ["Describe a memorable journey",["where you went","who you went with","how you travelled"],"and explain why it was memorable."],
+ ["Describe a piece of technology you use often",["what it is","how often you use it","what you use it for"],"and explain how your life would change without it."],
+ ["Describe a teacher who influenced you",["who the teacher was","what subject they taught","what they were like"],"and explain how they influenced you."],
+ ["Describe a festival in your country",["what it is called","when it happens","what people do"],"and explain why it is important."],
+ ["Describe a decision that was difficult to make",["what the decision was","when you made it","what options you had"],"and explain why it was difficult."],
+ ["Describe a park or garden you like",["where it is","what it looks like","what you do there"],"and explain why you like it."],
+ ["Describe a time you were late",["when it happened","why you were late","what happened as a result"],"and explain how you felt."],
+ ["Describe an advertisement you remember",["where you saw it","what it was for","what it showed"],"and explain why you remember it."],
+ ["Describe a goal you hope to achieve",["what the goal is","when you set it","what you are doing to reach it"],"and explain why it matters to you."]
+];
+const WORDS = [
+ ["fluctuate","to rise and fall irregularly","Prices fluctuated sharply between 2010 and 2015."],
+ ["substantial","large in amount or importance","There was a substantial increase in car ownership."],
+ ["mitigate","to make something less harmful","Governments should act to mitigate traffic congestion."],
+ ["detrimental","causing harm","Excessive screen time can be detrimental to children."],
+ ["prevalent","common in a place or time","Obesity is increasingly prevalent in cities."],
+ ["plummet","to fall suddenly and steeply","Sales plummeted in the final quarter."],
+ ["advocate","to publicly support","Some experts advocate a four-day working week."],
+ ["inevitable","certain to happen","Some job losses to automation are inevitable."],
+ ["disparity","a clear difference, often unfair","There is a disparity between urban and rural incomes."],
+ ["proportion","a part of a whole","A large proportion of students study abroad."],
+ ["compelling","convincing and powerful","There is compelling evidence for this view."],
+ ["alleviate","to make pain or a problem less severe","New housing could alleviate homelessness."],
+ ["undermine","to weaken gradually","Cheating undermines trust in exams."],
+ ["feasible","possible and practical","Free public transport is not feasible everywhere."],
+ ["consecutive","following one after another","Exports grew for five consecutive years."],
+ ["incentive","something that encourages action","Tax incentives could promote green energy."],
+ ["peak","to reach the highest point","Visitor numbers peaked in July."],
+ ["sustainable","able to continue without damage","Sustainable farming protects the soil."],
+ ["contend","to argue or claim","Critics contend that the policy is unfair."],
+ ["marginal","small and not important","There was only a marginal decline."],
+ ["exacerbate","to make a problem worse","Tourism can exacerbate water shortages."],
+ ["integral","essential to the whole","Sport is integral to a balanced education."],
+ ["stagnate","to stop developing","Wages stagnated over the decade."],
+ ["drawback","a disadvantage","The main drawback is the high cost."],
+ ["notion","an idea or belief","The notion that money brings happiness is debatable."],
+ ["outweigh","to be greater than","The benefits outweigh the risks."],
+ ["comprise","to consist of","The workforce comprises mostly young people."],
+ ["robust","strong and effective","A robust health system is vital."],
+ ["curb","to control or limit","Laws were introduced to curb pollution."],
+ ["accessible","easy to reach or use","Online courses make education more accessible."]
+];
+const LCONV = [[39,9],[37,8.5],[35,8],[32,7.5],[30,7],[26,6.5],[23,6],[18,5.5],[16,5],[13,4.5],[10,4],[8,3.5],[6,3],[4,2.5],[0,0]];
+const RCONV_A = [[39,9],[37,8.5],[35,8],[33,7.5],[30,7],[27,6.5],[23,6],[19,5.5],[15,5],[13,4.5],[10,4],[8,3.5],[6,3],[4,2.5],[0,0]];
+const RCONV_G = [[40,9],[39,8.5],[37,8],[36,7.5],[34,7],[32,6.5],[30,6],[27,5.5],[23,5],[19,4.5],[15,4],[12,3.5],[9,3],[6,2.5],[0,0]];
+
+// ---------- state ----------
+const KEY="ielts30-v1";
+let S={start:new Date().toISOString().slice(0,10),target:"7",module:"Academic",done:{},notes:{},known:[],sel:null};
+try{const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw));}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const $=id=>document.getElementById(id);
+
+function todayIndex(){
+  const s=new Date(S.start+"T00:00:00"), n=new Date(); n.setHours(0,0,0,0);
+  return Math.floor((n-s)/864e5);
+}
+if(S.sel===null){const t=todayIndex(); S.sel=Math.min(29,Math.max(0,t));}
+
+$("start").value=S.start; $("target").value=S.target; $("module").value=S.module;
+$("start").onchange=e=>{S.start=e.target.value||S.start;save();render();};
+$("target").onchange=e=>{S.target=e.target.value;save();render();};
+$("module").onchange=e=>{S.module=e.target.value;save();renderTasks();calc();};
+
+function pct(d){const a=S.done[d]||[];return a.filter(Boolean).length/4*100;}
+
+function renderGrid(){
+  const g=$("grid"); g.innerHTML=""; const t=todayIndex();
+  for(let w=0;w<5;w++){
+    const row=document.createElement("div"); row.className="week";
+    const lab=document.createElement("span"); lab.textContent=w<4?"Week "+(w+1):"Final"; row.appendChild(lab);
+    const n=w<4?7:2;
+    for(let i=0;i<n;i++){
+      const d=w*7+i; const b=document.createElement("button");
+      b.className="bubble"+(d===S.sel?" sel":"")+(d===t?" today":"");
+      b.textContent=d+1; const p=pct(d); b.style.setProperty("--p",p);
+      if(p>=50) b.dataset.full="1";
+      b.setAttribute("aria-label",`Day ${d+1}, ${Math.round(p)}% done`+(d===t?", today":""));
+      b.onclick=()=>{S.sel=d;save();render();};
+      row.appendChild(b);
+    }
+    g.appendChild(row);
+  }
+  // totals
+  let html=""; let all=0;
+  SK.forEach(([k,name],i)=>{
+    let c=0; for(let d=0;d<30;d++) if((S.done[d]||[])[i]) c++;
+    all+=c;
+    html+=`<div class="bar"><span>${name}</span><i><b style="width:${c/30*100}%;background:var(--${k})"></b></i><span>${c}/30</span></div>`;
+  });
+  const days=Object.keys(S.done).filter(d=>pct(d)===100).length;
+  $("totals").innerHTML=`<div style="margin-bottom:6px"><strong>${days}</strong> of 30 days complete. Aiming for band ${S.target}.</div>`+html;
+}
+
+function renderTasks(){
+  const d=S.sel, p=PLAN[d], t=todayIndex();
+  const date=new Date(S.start+"T00:00:00"); date.setDate(date.getDate()+d);
+  const ds=date.toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
+  $("dayTitle").textContent=`Day ${d+1}: ${p[1]}`;
+  $("phase").textContent=`${p[0]}. ${ds}${d===t?" (today)":""}. About ${MINS[p[1]]||90} minutes.`;
+  $("prev").disabled=d===0; $("next").disabled=d===29;
+  const ul=$("tasks"); ul.innerHTML="";
+  const done=S.done[d]||[false,false,false,false];
+  SK.forEach(([k,name],i)=>{
+    let txt=p[2+i];
+    if(S.module==="General Training"&&k==="W"&&/Task 1/.test(txt)&&!/Task 2/.test(txt)) txt+=" (General Training: practise a letter — formal, semi-formal or informal — instead.)";
+    const li=document.createElement("li"); li.className="task"+(done[i]?" done":""); li.style.setProperty("--c",`var(--${k})`);
+    const id=`t${d}_${i}`;
+    li.innerHTML=`<input type="checkbox" id="${id}" ${done[i]?"checked":""}><label for="${id}"><span class="skill">${name}</span><p class="txt">${txt}</p></label>`;
+    li.querySelector("input").onchange=e=>{
+      const a=S.done[d]||[false,false,false,false]; a[i]=e.target.checked; S.done[d]=a; save();
+      li.classList.toggle("done",e.target.checked); renderGrid();
+    };
+    ul.appendChild(li);
+  });
+  $("note").value=S.notes[d]||"";
+}
+$("note").oninput=e=>{S.notes[S.sel]=e.target.value;save();};
+$("prev").onclick=()=>{if(S.sel>0){S.sel--;save();render();}};
+$("next").onclick=()=>{if(S.sel<29){S.sel++;save();render();}};
+function render(){renderGrid();renderTasks();}
+render();
+
+// ---------- tabs ----------
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",x===b));
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("on",p.id===b.dataset.p));
+});
+
+// ---------- timer ----------
+const PRE=[["Writing Task 1",20],["Writing Task 2",40],["Reading passage",20],["Full Reading",60],["Listening",30],["Speaking Part 2",2]];
+let tTotal=1200,tLeft=1200,tInt=null;
+function fmt(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");}
+function beep(){try{const c=new (window.AudioContext||window.webkitAudioContext)();const o=c.createOscillator();o.frequency.value=880;o.connect(c.destination);o.start();o.stop(c.currentTime+.4);}catch(e){}}
+PRE.forEach(([n,m],i)=>{const b=document.createElement("button");b.className="btn";b.textContent=`${n} (${m} min)`;
+  b.onclick=()=>{clearInterval(tInt);tInt=null;tTotal=tLeft=m*60;$("clock").textContent=fmt(tLeft);$("tLabel").textContent=n;$("tStart").textContent="Start";};
+  $("presets").appendChild(b);});
+$("tStart").onclick=()=>{
+  if(tInt){clearInterval(tInt);tInt=null;$("tStart").textContent="Resume";return;}
+  $("tStart").textContent="Pause";
+  tInt=setInterval(()=>{tLeft--;$("clock").textContent=fmt(Math.max(0,tLeft));
+    if(tLeft<=0){clearInterval(tInt);tInt=null;beep();$("tStart").textContent="Start";$("tLabel").textContent="Time's up. Pencils down.";tLeft=tTotal;}},1000);
+};
+$("tReset").onclick=()=>{clearInterval(tInt);tInt=null;tLeft=tTotal;$("clock").textContent=fmt(tLeft);$("tStart").textContent="Start";};
+
+// ---------- cue cards ----------
+let cueI=Math.floor(Math.random()*CUES.length),cueInt=null;
+function showCue(){const c=CUES[cueI];$("cueCard").innerHTML=`<h3>${c[0]}</h3><p style="margin:0 0 4px">You should say:</p><ul>${c[1].map(x=>`<li>${x}</li>`).join("")}</ul><p style="margin:0">${c[2]}</p>`;}
+showCue();
+$("cueNew").onclick=()=>{let n;do{n=Math.floor(Math.random()*CUES.length);}while(n===cueI);cueI=n;showCue();clearInterval(cueInt);$("cueClock").textContent="";};
+$("cuePrep").onclick=()=>{
+  clearInterval(cueInt);let phase="Prepare",left=60;$("cueClock").textContent=`${phase}: ${fmt(left)}`;
+  cueInt=setInterval(()=>{left--;
+    if(left<0){if(phase==="Prepare"){beep();phase="Speak";left=120;}else{clearInterval(cueInt);beep();$("cueClock").textContent="Finished. How did it go?";return;}}
+    $("cueClock").textContent=`${phase}: ${fmt(left)}`;},1000);
+};
+
+// ---------- word cards ----------
+let wIdx=0,flipped=false;
+function deck(){return WORDS.map((w,i)=>i).filter(i=>!S.known.includes(i));}
+function showWord(){
+  const d=deck(); $("wordCount").textContent=`${S.known.length} of ${WORDS.length} words learned. Tap the card to see the meaning.`;
+  if(!d.length){$("flash").innerHTML=`<div class="w">Deck complete</div><div class="m">Reset the deck to review again.</div>`;return;}
+  wIdx=wIdx%d.length; const w=WORDS[d[wIdx]];
+  $("flash").innerHTML=flipped?`<div class="w">${w[0]}</div><div class="m">${w[1]}</div><div class="ex">${w[2]}</div>`:`<div class="w">${w[0]}</div><div class="muted" style="margin-top:8px">Say a sentence with it, then flip.</div>`;
+}
+const flip=()=>{flipped=!flipped;showWord();};
+$("flash").onclick=flip; $("flash").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();flip();}};
+$("wLearn").onclick=()=>{wIdx++;flipped=false;showWord();};
+$("wKnow").onclick=()=>{const d=deck();if(d.length){S.known.push(d[wIdx%d.length]);save();}flipped=false;showWord();};
+$("wReset").onclick=()=>{S.known=[];save();wIdx=0;flipped=false;showWord();};
+showWord();
+
+// ---------- band calculator ----------
+["bW","bS"].forEach(id=>{const s=$(id);s.innerHTML='<option value="">–</option>';for(let b=4;b<=9;b+=.5)s.innerHTML+=`<option>${b}</option>`;});
+function conv(raw,t){for(const[min,b] of t) if(raw>=min) return b;return 0;}
+function calc(){
+  const l=$("bL").value, r=$("bR").value, w=$("bW").value, s=$("bS").value;
+  const parts=[];
+  if(l!=="") parts.push(["Listening",conv(+l,LCONV)]);
+  if(r!=="") parts.push(["Reading",conv(+r,S.module==="Academic"?RCONV_A:RCONV_G)]);
+  if(w) parts.push(["Writing",+w]); if(s) parts.push(["Speaking",+s]);
+  if(!parts.length){$("bandOut").innerHTML='<span class="muted">Enter scores from a practice test to see your bands.</span>';return;}
+  let txt=parts.map(([n,b])=>`${n} ${b}`).join(", ");
+  if(parts.length===4){
+    const avg=parts.reduce((a,p)=>a+p[1],0)/4; const ov=Math.round(avg*2)/2; // .25 rounds up to .5, .75 up to next
+    const gap=ov-(+S.target);
+    $("bandOut").innerHTML=`<strong>${ov.toFixed(1)}</strong>Overall band. ${txt}. ${gap>=0?"You're at or above your target.":`You're ${Math.abs(gap)} below your target of ${S.target}. Focus on ${parts.slice().sort((a,b)=>a[1]-b[1])[0][0]}.`}`;
+  } else $("bandOut").innerHTML=txt+'<div class="muted">Fill in all four to see your overall band.</div>';
+}
+["bL","bR","bW","bS"].forEach(id=>$(id).oninput=calc); calc();
+</script>
+</body>
+</html>
